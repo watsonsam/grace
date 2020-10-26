@@ -8,7 +8,7 @@ class Maze:
         self.height = height
         self.grid = {}
         self.build_grid()
-        # TODO:self.build_maze()
+        self.build_maze()
 
     def build_grid(self):
         for w in range(self.width):
@@ -61,19 +61,21 @@ class Maze:
                 unvisited_neighbours.append(nbr)
         return unvisited_neighbours
 
-    # def build_maze(self):
-    #     start_x = random.randint(0, self.width - 1)
-    #     start_y = random.randint(0, self.height - 1)
-    #     self.grid[(start_x, start_y)].visited = True
-    #     self.build((start_x, start_y))
-    #
-    # def build(self, x_y):
-    #     print(x_y)
-    #     unvisited_neighbours = self.get_unvisited_neighbours(x_y)
-    #     unvisited_neighbour_count = len(unvisited_neighbours)
-    #
-    #     if unvisited_neighbour_count > 0:
-    #         next_x_y = random.choice(unvisited_neighbours)
-    #         self.join_cells(x_y, next_x_y)
-    #         self.grid[next_x_y].visited = True
-    #         self.build(next_x_y)
+    def build_maze(self):
+        start_x = random.randint(0, self.width - 1)
+        start_y = random.randint(0, self.height - 1)
+        self.build((start_x, start_y))
+
+    def build(self, x_y):
+        print(x_y)
+        self.grid[x_y].visited = True
+        done = False
+        while not done:
+            unvisited_neighbours = self.get_unvisited_neighbours(x_y)
+
+            if len(unvisited_neighbours) > 0:
+                next_x_y = random.choice(unvisited_neighbours)
+                self.join_cells(x_y, next_x_y)
+                self.build(next_x_y)
+            else:
+                done = True
