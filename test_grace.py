@@ -23,19 +23,19 @@ class MyTestCase(unittest.TestCase):
 
     def test_correct_neighbours_returned(self):
         the_maze = maze.Maze(3, 3)
-        neighbours = the_maze.get_neighbours(1, 1)
+        neighbours = the_maze.get_neighbours((1, 1))
         self.assertEqual(len(neighbours), 4)
         self.assertIn((1, 0), neighbours)
         self.assertIn((1, 2), neighbours)
         self.assertIn((2, 1), neighbours)
         self.assertIn((0, 1), neighbours)
 
-        neighbours = the_maze.get_neighbours(0, 0)
+        neighbours = the_maze.get_neighbours((0, 0))
         self.assertEqual(len(neighbours), 2)
         self.assertIn((1, 0), neighbours)
         self.assertIn((0, 1), neighbours)
 
-        neighbours = the_maze.get_neighbours(2, 2)
+        neighbours = the_maze.get_neighbours((2, 2))
         self.assertEqual(len(neighbours), 2)
         self.assertIn((2, 1), neighbours)
         self.assertIn((1, 2), neighbours)
@@ -62,7 +62,6 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(the_maze.grid[(1, 1)].south, False)
 
 
-    #def test_cannot_join_non_contiguous_cells(self):
 
 
 if __name__ == '__main__':
