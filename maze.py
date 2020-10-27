@@ -69,15 +69,18 @@ class Maze:
 
     # TODO: make non-recursive
     def build(self, x_y):
-        print(x_y)
-        self.grid[x_y].visited = True
-        done = False
-        while not done:
-            unvisited_neighbours = self.get_unvisited_neighbours(x_y)
+        nodes_to_visit = [x_y]
 
+        while len(nodes_to_visit) > 0:
+            node = nodes_to_visit[-1]
+            #print(node)
+            if not self.grid[node].visited:
+                self.grid[node].visited = True
+            unvisited_neighbours = self.get_unvisited_neighbours(node)
             if len(unvisited_neighbours) > 0:
-                next_x_y = random.choice(unvisited_neighbours)
-                self.join_cells(x_y, next_x_y)
-                self.build(next_x_y)
+                next_node = random.choice(unvisited_neighbours)
+                self.join_cells(node, next_node)
+                nodes_to_visit.append(next_node) #leaving previous node to come back to
             else:
-                done = True
+                nodes_to_visit.remove(node)
+

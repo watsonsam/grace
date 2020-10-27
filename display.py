@@ -10,18 +10,19 @@ def draw_maze(maze, cell_size):
     for k, v in maze.grid.items():
         x, y = k
         line_colour = (255, 100, 255)
+        line_width = 3
         if v.north:
-            pygame.draw.line(screen, line_colour, (x * cell_size, y * cell_size),
-                             ((x * cell_size) + cell_size, y * cell_size), 3)
+            pygame.draw.aaline(screen, line_colour, (x * cell_size, y * cell_size),
+                               ((x * cell_size) + cell_size, y * cell_size), line_width)
         if v.south:
-            pygame.draw.line(screen, line_colour, (x * cell_size, (y * cell_size) + cell_size),
-                             ((x * cell_size) + cell_size, (y * cell_size) + cell_size), 3)
+            pygame.draw.aaline(screen, line_colour, (x * cell_size, (y * cell_size) + cell_size),
+                               ((x * cell_size) + cell_size, (y * cell_size) + cell_size), line_width)
         if v.east:
-            pygame.draw.line(screen, line_colour, ((x * cell_size) + cell_size, y * cell_size),
-                             ((x * cell_size) + cell_size, (y * cell_size) + cell_size), 3)
+            pygame.draw.aaline(screen, line_colour, ((x * cell_size) + cell_size, y * cell_size),
+                               ((x * cell_size) + cell_size, (y * cell_size) + cell_size), line_width)
         if v.west:
-            pygame.draw.line(screen, line_colour, (x * cell_size, y * cell_size),
-                             (x * cell_size, (y * cell_size) + cell_size), 3)
+            pygame.draw.aaline(screen, line_colour, (x * cell_size, y * cell_size),
+                               (x * cell_size, (y * cell_size) + cell_size), line_width)
 
     pygame.image.save(screen, "test.png")
 
