@@ -2,6 +2,7 @@ import cell
 import random
 
 
+# TODO: Get rid of class
 class Maze:
     def __init__(self, width, height):
         self.width = width
@@ -66,6 +67,7 @@ class Maze:
         start_y = random.randint(0, self.height - 1)
         self.build((start_x, start_y))
 
+    # TODO: make non-recursive
     def build(self, x_y):
         print(x_y)
         self.grid[x_y].visited = True
