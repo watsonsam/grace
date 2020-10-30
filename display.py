@@ -39,5 +39,5 @@ def draw_solution(screen, maze, cell_size, start, end):
     while len(solution) > 1:
         x, y = solution.pop(0)
         x1, y1 = solution[0]
-        pygame.draw.aaline(screen, (255, 0, 0), ((x * cell_size) + centre, ((y * cell_size) + centre)),
+        pygame.draw.aaline(screen, (255, 0, 255), ((x * cell_size) + centre, ((y * cell_size) + centre)),
                            ((x1 * cell_size) + centre, ((y1 * cell_size) + centre)))

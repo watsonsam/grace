@@ -10,7 +10,7 @@ def main():
     maze_time = timer()
     # print("Took " + str(maze_time - start) + " to build the maze")
     start = timer()
-    display.draw_maze(the_maze, 10, "test.png", True, (0, 0), ((width - 1), (height - 1)))
+    display.draw_maze(the_maze, 4, "test.png", True, (0, 0), ((width - 1), (height - 1)))
     stop = timer()
     # print("Took " + str(stop - start) + " to draw the maze")
 
