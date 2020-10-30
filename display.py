@@ -25,9 +25,11 @@ def draw_maze(maze, cell_size, file_name, with_solution=False, sol_start=(0, 0),
             pygame.draw.aaline(screen, line_colour, (x * cell_size, y * cell_size),
                                (x * cell_size, (y * cell_size) + cell_size), line_width)
 
+    pygame.image.save(screen, file_name)
+
     if with_solution:
         draw_solution(screen, maze, cell_size, sol_start, sol_end)
-    pygame.image.save(screen, file_name)
+    pygame.image.save(screen, "sol_" + file_name)
 
     pygame.quit()
 

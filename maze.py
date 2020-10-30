@@ -94,16 +94,35 @@ class Maze:
     def solve(self, start, end):
         nodes_to_visit = [start]
         path = [start]
+        decision_point = [start]
+        visited = [start]
 
         while len(nodes_to_visit) > 0:
             node = nodes_to_visit[-1]
             path.append(node)
+            visited.append(node)
             if node == end:
                 return path
             else:
-                unvisited = [n for n in self.graph[node] if n not in path]
+                unvisited = [n for n in self.graph[node] if n not in visited]
                 if len(unvisited) > 0:
-                    nodes_to_visit.append(unvisited[0])
+                    if len(unvisited) > 1:  # there's more than one option
+                        random.shuffle(unvisited)
+                        decision_point.append(unvisited[0])
+                        nodes_to_visit.append(unvisited[0])
+                    else:
+                        nodes_to_visit.append(unvisited[0])
                 else:
-                    nodes_to_visit.remove(node)
+                    print("visited: ", visited)
+                    print("nodes to visit: ", nodes_to_visit)
+                    print("dps: ", decision_point)
+                    print("path: ", path)
+                    dp = decision_point.pop()
+                    nodes_to_visit = nodes_to_visit[0: nodes_to_visit.index(dp)]
+                    path = path[0: path.index(dp)]
+
         return []
+# if dead end
+# clear nodes to visit after last decision point, includin last decisino opint
+# take that deison point out of the list
+# clear path after and including that dp
