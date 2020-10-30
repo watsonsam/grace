@@ -67,7 +67,6 @@ class Maze:
         start_y = random.randint(0, self.height - 1)
         self.build((start_x, start_y))
 
-    # TODO: make non-recursive
     def build(self, x_y):
         nodes_to_visit = [x_y]
 
