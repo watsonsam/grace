@@ -90,6 +90,7 @@ class Maze:
             else:
                 nodes_to_visit.remove(node)
 
+    # simple approach, not shortest path
     def solve(self, start, end):
         nodes_to_visit = [start]
         path = [start]
