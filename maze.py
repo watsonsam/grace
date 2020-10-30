@@ -8,6 +8,7 @@ class Maze:
         self.width = width
         self.height = height
         self.grid = {}
+        self.graph = {}
         self.build_grid()
         self.build_maze()
 
@@ -37,9 +38,16 @@ class Maze:
     def join_cells(self, x1_y1, x2_y2):
         x1, y1 = x1_y1
         x2, y2 = x2_y2
+        if x1_y1 in self.graph.keys():
+            self.graph[x1_y1].append(x2_y2)
+        else:
+            self.graph[x1_y1] = [x2_y2]
+        if x2_y2 in self.graph.keys():
+            self.graph[x2_y2].append(x1_y1)
+        else:
+            self.graph[x2_y2] = [x1_y1]
         cell1 = self.grid[(x1, y1)]
         cell2 = self.grid[(x2, y2)]
-        # check that the cells are neighbours
         if (x1, y1) in self.get_neighbours((x2, y2)):
             if x1 < x2:
                 cell1.east = False
@@ -72,14 +80,29 @@ class Maze:
 
         while len(nodes_to_visit) > 0:
             node = nodes_to_visit[-1]
-            #print(node)
             if not self.grid[node].visited:
                 self.grid[node].visited = True
             unvisited_neighbours = self.get_unvisited_neighbours(node)
             if len(unvisited_neighbours) > 0:
                 next_node = random.choice(unvisited_neighbours)
                 self.join_cells(node, next_node)
-                nodes_to_visit.append(next_node) #leaving previous node to come back to
+                nodes_to_visit.append(next_node)  # leaving previous node to come back to
             else:
                 nodes_to_visit.remove(node)
 
+    def solve(self, start, end):
+        nodes_to_visit = [start]
+        path = [start]
+
+        while len(nodes_to_visit) > 0:
+            node = nodes_to_visit[-1]
+            path.append(node)
+            if node == end:
+                return path
+            else:
+                unvisited = [n for n in self.graph[node] if n not in path]
+                if len(unvisited) > 0:
+                    nodes_to_visit.append(unvisited[0])
+                else:
+                    nodes_to_visit.remove(node)
+        return []
