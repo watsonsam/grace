@@ -1,5 +1,6 @@
 import cell
 import random
+from timeit import default_timer as timer
 
 
 # TODO: Get rid of class
@@ -92,16 +93,29 @@ class Maze:
 
     # simple approach, not shortest path
     def solve(self, start, end):
+        start_time = timer()
         nodes_to_visit = [start]
         path = [start]
         decision_point = [start]
-        visited = [start]
+        visited = set(start)
+        deepest_path = 0
+        greatest_number_decisions = 0
 
         while len(nodes_to_visit) > 0:
             node = nodes_to_visit[-1]
             path.append(node)
-            visited.append(node)
+            if len(path) > deepest_path:
+                deepest_path = len(path)
+            if len(decision_point) > greatest_number_decisions:
+                greatest_number_decisions = len(decision_point)
+            visited.add(node)
+
             if node == end:
+                stop_time = timer()
+                print("Solution took ", str(stop_time - start_time), " seconds.")
+                print("Solution path length: ", len(path))
+                print("Deepest path length: ", deepest_path)
+                print("Greatest number of decisions: ", greatest_number_decisions)
                 return path
             else:
                 unvisited = [n for n in self.graph[node] if n not in visited]
@@ -113,16 +127,12 @@ class Maze:
                     else:
                         nodes_to_visit.append(unvisited[0])
                 else:
-                    print("visited: ", visited)
-                    print("nodes to visit: ", nodes_to_visit)
-                    print("dps: ", decision_point)
-                    print("path: ", path)
+                    # print("visited: ", visited)
+                    # print("nodes to visit: ", nodes_to_visit)
+                    # print("dps: ", decision_point)
+                    # print("path: ", path)
                     dp = decision_point.pop()
                     nodes_to_visit = nodes_to_visit[0: nodes_to_visit.index(dp)]
                     path = path[0: path.index(dp)]
 
         return []
-# if dead end
-# clear nodes to visit after last decision point, includin last decisino opint
-# take that deison point out of the list
-# clear path after and including that dp
