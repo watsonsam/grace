@@ -1,7 +1,5 @@
 import random
-
-
-# from timeit import default_timer as timer
+from timeit import default_timer as timer
 
 
 class Cell:
@@ -14,9 +12,21 @@ class Cell:
         self.visited = False
 
 
-def build(width: int, height: int) -> (dict, dict):
-    the_maze = _build_maze(width, height)
-    return the_maze
+def build(width: int,
+          height: int,
+          with_solution: bool = True,
+          sol_start: object = None,
+          sol_end: object = None) -> (dict, dict, list):
+    grid, graph = _build_maze(width, height)
+
+    if with_solution:
+        if sol_start is None:
+            sol_start = (0,0)
+        if sol_end is None:
+            sol_end = ((width - 1), (height - 1))
+        return grid, graph, solve(graph["graph"], sol_start, sol_end)
+    else:
+        return grid, graph, []
 
 
 def _build_maze(width, height):
@@ -98,56 +108,47 @@ def _build_maze(width, height):
     return {"dim": dim, "grid": grid}, {"dim": dim, "graph": graph}
 
 
+def solve(graph, start, end):
+    start_time = timer()
+    nodes_to_visit = [start]
+    path = [start]
+    decision_point = [start]
+    visited = set(start)
+    deepest_path = 0
+    greatest_number_decisions = 0
 
+    while len(nodes_to_visit) > 0:
+        node = nodes_to_visit[-1]
+        path.append(node)
+        if len(path) > deepest_path:
+            deepest_path = len(path)
+        if len(decision_point) > greatest_number_decisions:
+            greatest_number_decisions = len(decision_point)
+        visited.add(node)
 
+        if node == end:
+            stop_time = timer()
+            print("Solution took ", str(stop_time - start_time), " seconds.")
+            print("Solution path length: ", len(path))
+            print("Deepest path length: ", deepest_path)
+            print("Greatest number of decisions: ", greatest_number_decisions)
+            return path
+        else:
+            unvisited = [n for n in graph[node] if n not in visited]
+            if len(unvisited) > 0:
+                if len(unvisited) > 1:  # there's more than one option
+                    random.shuffle(unvisited)
+                    decision_point.append(unvisited[0])
+                    nodes_to_visit.append(unvisited[0])
+                else:
+                    nodes_to_visit.append(unvisited[0])
+            else:
+                # print("visited: ", visited)
+                # print("nodes to visit: ", nodes_to_visit)
+                # print("dps: ", decision_point)
+                # print("path: ", path)
+                dp = decision_point.pop()
+                nodes_to_visit = nodes_to_visit[0: nodes_to_visit.index(dp)]
+                path = path[0: path.index(dp)]
 
-
-
-
-
-
-# simple approach, not shortest path
-# def solve(self, start, end):
-#     start_time = timer()
-#     nodes_to_visit = [start]
-#     path = [start]
-#     decision_point = [start]
-#     visited = set(start)
-#     deepest_path = 0
-#     greatest_number_decisions = 0
-#
-#     while len(nodes_to_visit) > 0:
-#         node = nodes_to_visit[-1]
-#         path.append(node)
-#         if len(path) > deepest_path:
-#             deepest_path = len(path)
-#         if len(decision_point) > greatest_number_decisions:
-#             greatest_number_decisions = len(decision_point)
-#         visited.add(node)
-#
-#         if node == end:
-#             stop_time = timer()
-#             print("Solution took ", str(stop_time - start_time), " seconds.")
-#             print("Solution path length: ", len(path))
-#             print("Deepest path length: ", deepest_path)
-#             print("Greatest number of decisions: ", greatest_number_decisions)
-#             return path
-#         else:
-#             unvisited = [n for n in graph[node] if n not in visited]
-#             if len(unvisited) > 0:
-#                 if len(unvisited) > 1:  # there's more than one option
-#                     random.shuffle(unvisited)
-#                     decision_point.append(unvisited[0])
-#                     nodes_to_visit.append(unvisited[0])
-#                 else:
-#                     nodes_to_visit.append(unvisited[0])
-#             else:
-#                 # print("visited: ", visited)
-#                 # print("nodes to visit: ", nodes_to_visit)
-#                 # print("dps: ", decision_point)
-#                 # print("path: ", path)
-#                 dp = decision_point.pop()
-#                 nodes_to_visit = nodes_to_visit[0: nodes_to_visit.index(dp)]
-#                 path = path[0: path.index(dp)]
-#
-#     return []
+    return []
