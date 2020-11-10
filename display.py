@@ -3,11 +3,12 @@ import pygame
 pygame.init()
 
 
-def draw_maze(maze, cell_size, file_name, with_solution=False, sol_start=(0, 0), sol_end=(0, 0)):
-    screen = pygame.Surface([(maze.width * cell_size) + 1, (maze.height * cell_size) + 1])
+def draw_maze(grid, cell_size, file_name, with_solution=False, sol_start=(0, 0), sol_end=(0, 0)):
+    width, height = grid["dim"]
+    screen = pygame.Surface([(width * cell_size) + 1, (height * cell_size) + 1])
     screen.fill((255, 255, 255))
 
-    for k, v in maze.grid.items():
+    for k, v in grid["grid"].items():
         x, y = k
         # line_colour = (255, 100, 255)
         line_colour = (0, 0, 0)
@@ -28,7 +29,7 @@ def draw_maze(maze, cell_size, file_name, with_solution=False, sol_start=(0, 0),
     pygame.image.save(screen, file_name)
 
     if with_solution:
-        draw_solution(screen, maze, cell_size, sol_start, sol_end)
+        draw_solution(screen, grid, cell_size, sol_start, sol_end)
     pygame.image.save(screen, "sol_" + file_name)
 
     pygame.quit()
